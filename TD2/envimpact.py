@@ -50,6 +50,7 @@ def impact(menu):
 def print_impact(liste):
     print("###################\n# Evironemental impact #\n##################")
     print("This meal uses\t",liste[0],"square meters of land")
+    print("This meal uses\t")
 
 
 liste_menu=["Tofu", "Wheat & Rye (Bread)", "Rapeseed Oil", "Tomatoes", "Bananas", "Beet Sugar"]
