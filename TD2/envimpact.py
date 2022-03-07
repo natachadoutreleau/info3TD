@@ -53,7 +53,8 @@ def print_impact(liste):
     print("This meal uses\t")
 
 
-liste_menu=["Tofu", "Wheat & Rye (Bread)", "Rapeseed Oil", "Tomatoes", "Bananas", "Beet Sugar"]
-l=impact(liste_menu)
-print(l)
-print_impact(l)
+if __name__ == "__main__":
+    liste_menu=["Tofu", "Wheat & Rye (Bread)", "Rapeseed Oil", "Tomatoes", "Bananas", "Beet Sugar"]
+    l=impact(liste_menu)
+    print(l)
+    print_impact(l)
