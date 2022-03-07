@@ -1,3 +1,7 @@
+import numpy as np
+import myutils
+
+
 cal= {"Wheat & Rye (Bread)": 2490 ,"Maize (Meal)":3630, "Potatoes":670,
     "Beet Sugar":3870 ,"Coffee":560,"Dark Chocolate":3930,
     "Rapeseed Oil": 8096,"Olive Oil":8096,
@@ -38,6 +42,7 @@ def all_the_meals(Carbe,ext,fate,fruit,prote,veg):
                             count=count+1
     return list
 
+
 def print_nutritional_val(menu, quant):
     print("The meal is composed of : ")
     print("---------------------------------------------------------------------------------------")
@@ -46,7 +51,7 @@ def print_nutritional_val(menu, quant):
     qcarb=0
     qfat=0
     for i in range(0,len(menu)):
-        print("-",quant[i],"g of", menu[i],",  contributing ",quant[i]*(cal[menu[i]])*0.001,"kcal,", quant[i]*(prot[menu[i]])*0.001," g carb,",quant[i]*(carb[menu[i]])*0.001," g carb,",quant[i]*(fat[menu[i]])*0.001,"g fat,")
+        print("-"+str(quant[i])+"g of"+str(menu[i])+",  contributing "+str(quant[i]*(cal[menu[i]])*0.001)+"kcal,"+ str(quant[i]*(prot[menu[i]])*0.001)+" g carb,"+str(quant[i]*(carb[menu[i]])*0.001)+" g carb,"+str(quant[i]*(fat[menu[i]])*0.001)+"g fat,")
         qcal += quant[i]*(cal[menu[i]])*0.001
         qprot += quant[i]*(prot[menu[i]])*0.001
         qcarb+= quant[i]*(carb[menu[i]])*0.001
@@ -55,7 +60,25 @@ def print_nutritional_val(menu, quant):
     print("TOTAL : \t\t\t",qcal,"kcal", qprot,"g protein", qcarb, "g carb", qfat,"g fat" )
 
 
+def ask_extra(Extra) :
+    extraK= {}
+    for a in Extra :
+        nb= float(input(a+": "))
+        extraK[a]=nb
+    return extraK
 
+def quantite_menu(extra_q,menu) : 
+    K= int(input("K: "))
+    ps, cs, fs, veg, fruit, extra= menu
+    print(menu)
+    print(ps, cs, fs, veg, fruit, extra)
+    a= np.array([[4*prot[ps],4*prot[cs],4*prot[fs]], [4*carb[ps],4*carb[cs],4*carb[fs]], [8.8*fat[ps],8.8*fat[cs],8.8*fat[fs]]])
+    x=(0.12*K-4*0.125*prot[veg]-4*0.05*prot[fruit]-4*prot[extra]*extra_q[extra])
+    y=(0.66*K-4*0.125*carb[veg]-4*0.05*carb[fruit]-4*carb[extra]*extra_q[extra])
+    z=(0.22*K-8.8*fat[veg]-8.8*fat[fruit]-8.8*fat[extra]*extra_q[extra])
+    b=np.array([x,y,z])
+    x= np.linalg.solve(a,b)
+    print(x)
 
 
 CarbSource=["Wheat & Rye (Bread)","Maize (Meal)", "Potatoes"]
@@ -66,4 +89,7 @@ ProteinSource=["Tofu", "Bovine Meat (beef herd)", "Poultry Meat", "Eggs" ]
 Vegetable= [ "Tomatoes", "Root Vegetables", "Other Vegetables"]
 
 liste_menu=all_the_meals(CarbSource,Extra,FatSource,Fruit,ProteinSource,Vegetable)
+##print_nutritional_val(liste_menu[0],50)
 print(liste_menu[0])
+a= ask_extra(Extra)
+quantite_menu(a,liste_menu[0])
