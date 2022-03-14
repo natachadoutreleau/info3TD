@@ -23,7 +23,7 @@ def askExtraQuantities(Extras):
   Parameters passed in data mode: [none]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
   - Extras is a list of strings
   Postconditions (alterations of program state outside this function): [none]
   Returned result: a dictionary associating the typical serving size (asked to the user)
@@ -41,7 +41,7 @@ def computeQuantities(Foods, MealKcalTarget, KcalDict, GProtDict, GCarbDict, GFa
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Foods is a list of 6 strings containing the components of a meal: a source of proteins, a source of carbohydrates,
       a source of fat, a vegetable, a fruit and an extra (in this order)
     - Each meal component in Foods must exist as a key in KcalDict, GProtDict, GCarbDict, and in GFatDict
@@ -69,7 +69,7 @@ def computeQuantities(Foods, MealKcalTarget, KcalDict, GProtDict, GCarbDict, GFa
   prot_from_vegetable = vegetable_qty*GProtDict[vegetable]
   fat_from_vegetable = vegetable_qty*GFatDict[vegetable]
   carb_from_vegetable = vegetable_qty*GCarbDict[vegetable]
-  
+
   # A meal should contain 50g of fruit
   fruit_qty = 0.050
   kcal_from_fruit = fruit_qty*KcalDict[fruit]
@@ -77,8 +77,8 @@ def computeQuantities(Foods, MealKcalTarget, KcalDict, GProtDict, GCarbDict, GFa
   fat_from_fruit = fruit_qty*GFatDict[fruit]
   carb_from_fruit = fruit_qty*GCarbDict[fruit]
 
-  # extra 
-  extra_qty = ExtraQtyDict[extra] 
+  # extra
+  extra_qty = ExtraQtyDict[extra]
   kcal_from_extra = extra_qty*KcalDict[extra]
   prot_from_extra = extra_qty*GProtDict[extra]
   fat_from_extra = extra_qty*GFatDict[extra]
@@ -105,10 +105,10 @@ def computeQuantities(Foods, MealKcalTarget, KcalDict, GProtDict, GCarbDict, GFa
 
   if prot_source_qty < 0 or carb_source_qty < 0 or fat_source_qty < 0:
     raise Exception('Impossible to satisfy the nutritional constraints with this combination of foods: ' + str(Foods))
-  
+
   sum_kcal = kcal_from_vegetable + kcal_from_fruit + kcal_from_extra + prot_source_qty*KcalDict[protein_source] + carb_source_qty*KcalDict[carb_source] + fat_source_qty*KcalDict[fat_source]
   assert(myutils.approxEqual(sum_kcal, MealKcalTarget, 1e-3, 1e-6))
-  
+
   return [prot_source_qty, carb_source_qty, fat_source_qty, vegetable_qty, fruit_qty, extra_qty]
 
 
@@ -120,7 +120,7 @@ def printMealNutritionalInfo(Foods, Quantities, KcalDict, GProtDict, GCarbDict, 
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Foods is a list of strings containing (in this order): a source of protein, a source of carbs, a source of fat, a vegetable, a fruit, an extra
     - Quantities is a list of floats containing the quantity for each food, in kg or L depending on food type
     - both lists must have the same size
@@ -160,7 +160,7 @@ def enumerateAllPossibleMeals(ProteinSources, CarbSources, FatSources, Vegetable
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - ProteinSources, CarbSources, FatSources, Vegetables, Fruits and Extras are non-empty lists of strings
   Postconditions: [none]
   Result: The list of all possible meals, with a meal defined as list of 6 items (one source of proteins,
@@ -169,12 +169,12 @@ def enumerateAllPossibleMeals(ProteinSources, CarbSources, FatSources, Vegetable
   all_meals = []
   for prot_source in ProteinSources:
     for carb in CarbSources:
-      for fat in FatSources:
-        for veg in Vegetables:
-          for fruit in Fruits:         
-            for extra in Extras:
-              meal = [prot_source, carb, fat, veg, fruit, extra]
-              all_meals.append(meal)
+        for fat in FatSources:
+            for veg in Vegetables:
+              for fruit in Fruits:
+                for extra in Extras:
+                  meal = [prot_source, carb, fat, veg, fruit, extra]
+                  all_meals.append(meal)
   return all_meals
 
 
@@ -204,77 +204,77 @@ if __name__ == "__main__":
   print(len(all_meals)==len(protein_sources)*len(carb_sources)*len(fat_sources)*len(vegetables)*len(fruits)*len(extras))
   print('')
 
-  kcal_dict = {'Wheat & Rye (Bread)': 2490, 
+  kcal_dict = {'Wheat & Rye (Bread)': 2490,
                 'Maize (Meal)': 3630,
                 'Potatoes': 670,
                 'Beet Sugar': 3870,
                 'Coffee': 560,
                 'Dark Chocolate': 3930,
                 'Rapeseed Oil': 8096,
-                'Olive Oil': 8096, 
+                'Olive Oil': 8096,
                 'Bananas': 600,
                 'Apples': 480,
                 'Berries & Grapes': 530,
-                'Tofu': 765, 
-                'Bovine Meat (beef herd)': 1500, 
-                'Poultry Meat': 1220, 
+                'Tofu': 765,
+                'Bovine Meat (beef herd)': 1500,
+                'Poultry Meat': 1220,
                 'Eggs': 1630,
                 'Tomatoes' : 170,
                 'Root Vegetables': 380,
                 'Other Vegetables': 220}
 
-  gProt_dict = {'Wheat & Rye (Bread)': 82, 
+  gProt_dict = {'Wheat & Rye (Bread)': 82,
                 'Maize (Meal)': 84,
                 'Potatoes': 16,
                 'Beet Sugar': 0,
                 'Coffee': 80,
                 'Dark Chocolate': 42,
                 'Rapeseed Oil': 0,
-                'Olive Oil': 0, 
+                'Olive Oil': 0,
                 'Bananas': 7,
                 'Apples': 1,
                 'Berries & Grapes': 5,
-                'Tofu': 82, 
-                'Bovine Meat (beef herd)': 185, 
-                'Poultry Meat': 123, 
+                'Tofu': 82,
+                'Bovine Meat (beef herd)': 185,
+                'Poultry Meat': 123,
                 'Eggs': 113,
                 'Tomatoes' : 8,
                 'Root Vegetables': 9,
                 'Other Vegetables': 14}
 
-  gFat_dict = {'Wheat & Rye (Bread)': 12, 
+  gFat_dict = {'Wheat & Rye (Bread)': 12,
                 'Maize (Meal)': 12,
                 'Potatoes': 1,
                 'Beet Sugar': 0,
                 'Coffee': 0,
                 'Dark Chocolate': 357,
                 'Rapeseed Oil': 920,
-                'Olive Oil': 920, 
+                'Olive Oil': 920,
                 'Bananas': 3,
                 'Apples': 3,
                 'Berries & Grapes': 4,
-                'Tofu': 42, 
-                'Bovine Meat (beef herd)': 79, 
-                'Poultry Meat': 77, 
+                'Tofu': 42,
+                'Bovine Meat (beef herd)': 79,
+                'Poultry Meat': 77,
                 'Eggs': 121,
                 'Tomatoes' : 2,
                 'Root Vegetables': 2,
                 'Other Vegetables': 2}
 
-  gCarb_dict = {'Wheat & Rye (Bread)': 514.1, 
+  gCarb_dict = {'Wheat & Rye (Bread)': 514.1,
                 'Maize (Meal)': 797.1,
                 'Potatoes': 149.3,
                 'Beet Sugar': 967.5,
                 'Coffee': 60,
                 'Dark Chocolate': 155.1,
                 'Rapeseed Oil': 0,
-                'Olive Oil': 0, 
+                'Olive Oil': 0,
                 'Bananas': 136.4,
                 'Apples': 112.4,
                 'Berries & Grapes': 118.7,
-                'Tofu': 16.85, 
-                'Bovine Meat (beef herd)': 16.2, 
-                'Poultry Meat': 12.6, 
+                'Tofu': 16.85,
+                'Bovine Meat (beef herd)': 16.2,
+                'Poultry Meat': 12.6,
                 'Eggs': 28.3,
                 'Tomatoes' : 30.1,
                 'Root Vegetables': 81.6,
@@ -300,4 +300,3 @@ if __name__ == "__main__":
     print('False (test failed, this meal should be nutritionally valid.')
   else: #success of the try block
     print(myutils.approxEqualVect(my_quantities,[0.027161553, 0.1980991333, 0.01421888129, 0.125, 0.05, 0.008], releps, abseps))
-
