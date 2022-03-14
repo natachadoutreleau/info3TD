@@ -1,13 +1,4 @@
-###########
-# Imports #
-###########
 
-# External librairies
-
-
-# Local modules
-
-import myutils
 
 ########################
 # Function definitions #
@@ -80,6 +71,37 @@ def dailyEnergyRequirement(Gender, BodyWeight, Height, Age, PhysicalActivityLeve
 
 
 
+def approxEqual(X, Y, RelativeEpsilon, AbsoluteEspilon):
+  """
+  Parameters passed in data mode: [all of them]
+  Parameters passed in data/result mode: [none]
+  Parameters passed in result mode: [none]
+  Preconditions: X, Y and Epsilon are floats
+  Postconditions (alterations of program state outside this function): [none]
+  Returned result: a Boolean, True if X and Y are equal with absolute tolerance AbsoluteEpsilon
+  or with relative tolerance RelativeEpsilon.
+  This function is recommended to compare two floating-point numbers. Instead 
+  of testing whether they are exactly equal with ==, we test whether they are 
+  close enough. For more details, see for example
+  https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+  """
+  absX = abs(X)
+  absY = abs(Y)
+  absdiff = abs(X-Y)
+  if (X == Y):
+    # Shortcut, handles infinities and the case where both X and Y are exactly 0
+    return True
+  elif absdiff <= AbsoluteEspilon:
+    # The idea of relative difference breaks down near zero.
+    # Near zero, it is better to use the absolute difference.
+    return True
+  else:
+    # Use relative error
+    largest = max(absX, absY) # if X or Y is exactly 0, we divide by the other one
+    return ((absdiff / largest) < RelativeEpsilon)
+
+
+
 
 ################
 # Main program #
@@ -89,9 +111,10 @@ def dailyEnergyRequirement(Gender, BodyWeight, Height, Age, PhysicalActivityLeve
 if __name__ == "__main__":
   # The program below (unit tests) will be run only if the Python interpreter is launched with energyrequirement.py as an argument,
   # not if this file is included as a module in another main program.
-
-  abseps = 1e-15
   releps = 1e-6
+  abseps = 1e-15
+
+
 
   ####################################
   # Unit tests of basalMetabolicRate #
@@ -136,8 +159,8 @@ if __name__ == "__main__":
     # code that must be executed if the try clause does not raise an exception
     print(False)
 
-  print(myutils.approxEqual(basalMetabolicRate('F', 60, 165, 40), 1270.25, releps, abseps))
-  print(myutils.approxEqual(basalMetabolicRate('M', 60, 165, 40), 1436.25, releps, abseps))
+  print(approxEqual(basalMetabolicRate('F', 60, 165, 40), 1270.25, releps, abseps))
+  print(approxEqual(basalMetabolicRate('M', 60, 165, 40), 1436.25, releps, abseps))
 
 
 
@@ -156,5 +179,4 @@ if __name__ == "__main__":
     # code that must be executed if the try clause does not raise an exception
     print(False)
 
-  print(myutils.approxEqual(dailyEnergyRequirement('F', 60, 165, 40, 'light'), 2032.4, releps, abseps))
-
+  print(approxEqual(dailyEnergyRequirement('F', 60, 165, 40, 'light'), 2032.4, releps, abseps))
