@@ -47,7 +47,6 @@ def list_of_meal_and_quantities(protein_sources, carb_sources, fat_sources, vege
             print('False')
         else :
             repas_et_val=(meal,nut)
-            print(repas_et_val)
             all.append(repas_et_val)
     return all
 
@@ -56,4 +55,6 @@ if __name__ == "__main__":
     (protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict) = load_nutrition_fact()
     print(carb_sources)
     (land_use_dict, GHG_emissions_dict, acidifying_emissions_dict, eutrophying_emissions_dict, water_use_dict) = load_envi_data()
-    list_of_meal_and_quantities(protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict)
+    all = list_of_meal_and_quantities(protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict)
+    env= envimpact.allEnviImpact(all, land_use_dict, GHG_emissions_dict, acidifying_emissions_dict, eutrophying_emissions_dict, water_use_dict )
+    tres=envimpact.histo_all_Impact(env)

@@ -9,6 +9,7 @@
 # Local modules
 
 import myutils
+import matplotlib.pyplot as plt
 
 
 ########################
@@ -20,7 +21,7 @@ def computeEnvironmentalImpact(Foods, Quantities, LandUseDict, GHGEmissionsDict,
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Foods is a list of strings containing (in this order): a source of protein, a source of carbs, a source of fat, a vegetable, a fruit, an extra
     - Quantities is a list of floats containing the quantity for each food, in kg or L depending on food type
     - both lists must have the same size
@@ -30,10 +31,10 @@ def computeEnvironmentalImpact(Foods, Quantities, LandUseDict, GHGEmissionsDict,
   the amount of acidifying emissions (in g SO2eq), the amount of eutrophying emissions (in g PO43-eq) and the stress-weighted water use (in L) of the meal.
   """
   land_use = 0
-  ghg = 0
-  acid = 0
-  eutroph = 0
-  water = 0
+  ghg      = 0
+  acid     = 0
+  eutroph  = 0
+  water    = 0
   for i, food in enumerate(Foods):
     land_use += Quantities[i]*LandUseDict[food]
     ghg += Quantities[i]*GHGEmissionsDict[food]
@@ -41,6 +42,54 @@ def computeEnvironmentalImpact(Foods, Quantities, LandUseDict, GHGEmissionsDict,
     eutroph += Quantities[i]*EutrophyingEmissionsDict[food]
     water += Quantities[i]*WaterUseDict[food]
   return [land_use, ghg, acid, eutroph, water]
+
+
+def allEnviImpact(allFoods, LandUseDict, GHGEmissionsDict, AcidifyingEmissionsDict, EutrophyingEmissionsDict, WaterUseDict) :
+    allImpact=[]
+    for menu in allFoods :
+        imp= computeEnvironmentalImpact(menu[0], menu[1], LandUseDict, GHGEmissionsDict, AcidifyingEmissionsDict, EutrophyingEmissionsDict, WaterUseDict)
+        allImpact.append(imp)
+    return allImpact
+
+def histo_impact(list,nom) :
+    plt.hist(list, color = 'pink', edgecolor = 'red')
+    plt.xlabel('nb')
+    plt.ylabel('nombres')
+    plt.title('histogramme de'+nom)
+    plt.show()
+    nomfic= "histogramme de"+nom+".png"
+    plt.savefig(nomfic)
+
+def histo_all_Impact(list_Impact) :
+    land_use = []
+    ghg      = []
+    acid     = []
+    eutroph  = []
+    water    = []
+    for imp in list_Impact:
+        land_use.append(imp[0])
+        ghg.append(imp[1])
+        acid.append(imp[2])
+        eutroph.append(imp[3])
+        water.append(imp[4])
+    histo_impact(land_use, "land use")
+    lu=float(input("land use treshold : "))
+    histo_impact(ghg,"GHG")
+    g=float(input("ghg treshold : "))
+    histo_impact(acid, "acidifying")
+    a=float(input("acid treshold : "))
+    histo_impact(eutroph,"eutrophying")
+    e=float(input("eutrophy treshold : "))
+    histo_impact(water, "eau utilisé")
+    w=float(input("water treshold : "))
+    tres= [lu,g,a,e,w]
+    print(tres)
+    return tres
+
+
+def ask_treshold(list_Impact) :
+
+     return histo_all_Impact(list_Impact)
 
 
 
@@ -51,7 +100,7 @@ def printMealEnvironmentalImpact(Foods, EnvImpact):
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Foods is a list of strings containing (in this order): a source of protein, a source of carbs, a source of fat, a vegetable, a fruit, an extra
     - EnvImpact is a list containing (in this order): the land use (in square meters), the amount of greenhouse gas emissions (in kg CO2eq),
   the amount of acidifying emissions (in g SO2eq), the amount of eutrophying emissions (in g PO43-eq) and the stress-weighted water use (in L) of the meal.
@@ -74,7 +123,7 @@ def isEnvironmentFriendly(Impact, Thresholds):
   Parameters passed in data mode: [all]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Impact and Thresholds are two lists or tuples of floats
     - both lists must have the same size
   Postconditions: [none]
