@@ -1,4 +1,4 @@
-
+import os
 
 ########################
 # Function definitions #
@@ -10,16 +10,16 @@ def basalMetabolicRate(Gender, BodyWeight, Height, Age):
   Parameters passed in data mode: [all of them]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Gender is either 'F' or 'M'
     - Age >= 18
     - Height > 0, in centimeters
     - BodyWeight > 0, in kg
-  Postconditions (alterations of program state outside this function): 
+  Postconditions (alterations of program state outside this function):
     - a ValueError exception is thrown if Gender is neither 'F' nor 'M',
       if Age < 18, if Height <= 0 or if BodyWeight <= 0
-  Returned result: a float containing the basal metabolic rate in kcal, computed according to   
-  (reference: Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO (1990). "A new predictive equation 
+  Returned result: a float containing the basal metabolic rate in kcal, computed according to
+  (reference: Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO (1990). "A new predictive equation
   for resting energy expenditure in healthy individuals". The American Journal of Clinical Nutrition. 51 (2): 241–247.)
   """
   if Gender != 'F' and Gender != 'M':
@@ -43,15 +43,15 @@ def dailyEnergyRequirement(Gender, BodyWeight, Height, Age, PhysicalActivityLeve
   Parameters passed in data mode: [all of them]
   Parameters passed in data/result mode: [none]
   Parameters passed in result mode: [none]
-  Preconditions: 
+  Preconditions:
     - Gender is either 'F' or 'M'
     - Age > 18
     - Height > 0, in centimeters
     - BodyWeight > 0, in kg
     - Physical activity level is one of the following strings: 'sedentary', 'light', 'moderate', 'intense', 'very intense'
-  Postconditions (alterations of program state outside this function): 
+  Postconditions (alterations of program state outside this function):
     -  a ValueError exception is thrown if one of the parameter values is not valid
-  Returned result: a float containing the daily energy requirement in kcal, computed as 
+  Returned result: a float containing the daily energy requirement in kcal, computed as
   PhysicalActivityLevel*BasalMetabolicRate.
   """
   if PhysicalActivityLevel == 'sedentary':
@@ -80,8 +80,8 @@ def approxEqual(X, Y, RelativeEpsilon, AbsoluteEspilon):
   Postconditions (alterations of program state outside this function): [none]
   Returned result: a Boolean, True if X and Y are equal with absolute tolerance AbsoluteEpsilon
   or with relative tolerance RelativeEpsilon.
-  This function is recommended to compare two floating-point numbers. Instead 
-  of testing whether they are exactly equal with ==, we test whether they are 
+  This function is recommended to compare two floating-point numbers. Instead
+  of testing whether they are exactly equal with ==, we test whether they are
   close enough. For more details, see for example
   https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
   """
@@ -100,6 +100,36 @@ def approxEqual(X, Y, RelativeEpsilon, AbsoluteEspilon):
     largest = max(absX, absY) # if X or Y is exactly 0, we divide by the other one
     return ((absdiff / largest) < RelativeEpsilon)
 
+def quentin() :
+    filename = "userrequir.txt"
+    test = os.path.isfile(filename)
+    if test==True :
+        answer=input("Do you want to use the saved Parameters? y/n  \n >>>")
+        if answer=="y" :
+            f=open(filename,'r')
+            gender=f.readline()
+            gender=gender[0]
+            bdw=float(f.readline())
+            hght= float(f.readline())
+            age = float(f.readline())
+            phscl= f.readline()
+            info=(gender,bdw,hght,age,phscl)
+            print(info)
+            return info
+        if answer=="n" :
+            f=open(filename,'w')
+            f.truncate(0)
+            f.close()
+    gender= input("Genre (F/M) : ")
+    bdw = float(input("Poids : "))
+    hght = float(input("Taille : "))
+    age = float(input("Age : "))
+    phscl= input("Physical Activity (sedentary/light/intense/very intense) : ")
+    info=(gender,bdw,hght,age,phscl)
+    f=open(filename,'w')
+    f.write(gender+"\n"+str(bdw)+"\n"+str(hght)+"\n"+str(age)+"\n"+phscl)
+    f.close()
+    return info
 
 
 

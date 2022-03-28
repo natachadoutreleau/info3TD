@@ -1,5 +1,6 @@
 import nutritionfacts
 import envimpact
+import energyrequirementAdvanced as energy
 import pandas as pd
 
 def load_nutrition_fact() :
@@ -55,6 +56,11 @@ if __name__ == "__main__":
     (protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict) = load_nutrition_fact()
     print(carb_sources)
     (land_use_dict, GHG_emissions_dict, acidifying_emissions_dict, eutrophying_emissions_dict, water_use_dict) = load_envi_data()
-    all = list_of_meal_and_quantities(protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict)
-    env= envimpact.allEnviImpact(all, land_use_dict, GHG_emissions_dict, acidifying_emissions_dict, eutrophying_emissions_dict, water_use_dict )
-    tres=envimpact.histo_all_Impact(env)
+    info= energy.quentin()
+    K=energy.dailyEnergyRequirement(info[0], info[1], info[2], info[3], info[4])
+    print(K)
+    #all = list_of_meal_and_quantities(protein_sources, carb_sources, fat_sources, vegetables, fruits, extras, kcal_dict, gProt_dict, gFat_dict, gCarb_dict)
+    #env= envimpact.allEnviImpact(all, land_use_dict, GHG_emissions_dict, acidifying_emissions_dict, eutrophying_emissions_dict, water_use_dict )
+    #tres=envimpact.histo_all_Impact(env)
+    #friendmeals = envimpact.env_friendly_meal(all,env,tres)
+    #envimpact.write_in_file(friendmeals)

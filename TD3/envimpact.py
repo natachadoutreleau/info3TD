@@ -10,6 +10,7 @@
 
 import myutils
 import matplotlib.pyplot as plt
+import os
 
 
 ########################
@@ -139,6 +140,28 @@ def isEnvironmentFriendly(Impact, Thresholds):
     return True
   else:
     return False
+
+def env_friendly_meal(allmeals, allimpact, thresholds) :
+    friendly=[]
+    i=0
+    for meal in allmeals :
+        test= isEnvironmentFriendly(allimpact[i],thresholds)
+        if test==True :
+            friendly.append(meal)
+        i=i+1
+    return friendly
+
+def write_in_file(allmeals) :
+    filename = "env_friendly_meal.txt"
+    test = os.path.isfile(filename)
+    f=open(filename,'w')
+    if test==True :
+        f.truncate(0)
+    for meal in allmeals :
+        a=str(meal[0])
+        f.write(a)
+        f.write("\n")
+    f.close()
 
 
 
